@@ -1,0 +1,3 @@
+Hello, Everyone
+Hasmukh here,
+This file was created for DOT NET training purpose
