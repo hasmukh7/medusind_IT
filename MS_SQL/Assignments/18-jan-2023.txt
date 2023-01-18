@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 create database EmpDB
+=======
+
+>>>>>>> 15005ac394797d39d991b90e43b7fa93456966b4
