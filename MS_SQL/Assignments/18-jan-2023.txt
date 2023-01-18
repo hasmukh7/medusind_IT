@@ -1,1 +1,94 @@
+SQL Exercises
+DATE : 18 jan 2023
+
+ ------------------------------------------------------------------------------------------------------
+
 >>>	create database EmpDB
+
+>>>	use EmpDB
+
+------------------------------------------------------------------------------------------------------
+-- create Department table
+
+create table dept(
+deptno int primary key,
+dname varchar(20) not null,
+deptlocation varchar(20)
+)
+------------------------------------------------------------------------------------------------------
+-- insert some data into dept table
+
+insert into dept values(10,'ACCOUNTING','NEW YORK')
+insert into dept(deptno,dname,deptlocation) values(20,'RESEARCH','DALLAS')
+insert into dept values(30,'SALES','CHICAGO'),(40,'OPERATIONS','BOSTON')
+
+------------------------------------------------------------------------------------------------------
+-- show all data from dept table
+
+select * from dept
+------------------------------------------------------------------------------------------------------
+
+>>>	EMP(empno, ename, job, mgr-id, hiredate, sal, comm., deptno) 
+
+-- create employee table
+
+create table employee(
+empno int primary key,
+ename nvarchar(30) not null,
+job varchar(20) not null,
+mgrid int,
+hiredate date not null,
+salary float not null,
+comm int,
+deptno int references dept(deptno)
+)
+------------------------------------------------------------------------------------------------------
+
+--insert some data into employee table
+
+insert into employee values(7369,'SMITH','CLERK',7902,'17-DEC-80',800,null,20)
+
+insert into employee values(7499,'ALLEN','SALESMAN',7698,'20-FEB-81',1600,300,30),
+(7521,'WARD','SALESMAN',7698,'22-FEB-81',1250,500,30)
+
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+
+ALL QUESTIONS
+------------------------------------------------------------------------------------------------------
+
+1. List all employees whose name begins with 'A'.
+
+Solution : 
+select * from employee where ename like 'A%'  
+
+output :
+EMPNO   	ENAME     	JOB   	  		MGR-Id   	HIREDATE      	SAL     	COMM   	DEPTNO 
+7499		ALLEN	SALESMAN		7698		1981-02-20	1600		300		30
+7876		ADAMS	CLERK		7788		1987-05-23	1100		NULL		20
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+2. Select all those employees who don't have a manager. 
+
+Solution :
+select * from employee where mgrid is null
+
+output :
+EMPNO   	ENAME     	JOB   	  		MGR-Id   	HIREDATE      	SAL     	COMM   	DEPTNO 
+7839		KING		PRESIDENT		NULL		1981-11-17	5000		NULL		10
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+3. List employee name, number and salary for those employees who earn in the range 1200 to 1400. 
+
+Solution :
+select ename, empno, salary from employee where salary between 1200 and 1400
+
+output :
+ENAME     	EMPNO   	salary
+WARD	7521		1250
+MARTIN	7654		1250
+MILLER	7934		1300
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
