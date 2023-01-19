@@ -1,5 +1,9 @@
 SQL Exercises
-DATE : 18 jan 2023
+DATE: 18 Jan 2023
+
+************
+NOTE: JUST ZOOM IN AND ZOOM OUT FOR MORE CLARITY
+************
 
  ------------------------------------------------------------------------------------------------------
 
@@ -92,3 +96,172 @@ MARTIN	7654		1250
 MILLER	7934		1300
 
 -------------------------------------------------------------------------------------------------------------------------------------------------
+4. Give all the employees in the RESEARCH department a 10% pay rise. 
+Verify that this has been done by listing all their details before and after the rise. 
+
+output :
+-- varify before 
+select * from employee e full join dept d
+on e.deptno=d.deptno
+where d.dname='RESEARCH'
+
+empno	ename	job		mgrid	hiredate		salary	comm	deptno	deptno	dname		deptlocation
+7369		SMITH	CLERK	7902		1980-12-17	800		NULL		20		20		RESEARCH		DALLAS
+7566		JONES	MANAGER	7839		1981-04-02	2975		NULL		20		20		RESEARCH		DALLAS
+7788		SCOTT	ANALYST	7566		1987-04-19	3000		NULL		20		20		RESEARCH		DALLAS
+7876		ADAMS	CLERK	7788		1987-05-23	1100		NULL		20		20		RESEARCH		DALLAS
+7902		FORD		ANALYST	7566		1981-12-03	3000		NULL		20		20		RESEARCH		DALLAS
+
+-- update salary 10% rise
+update employee set salary=salary+((salary*10)/100) where deptno=20
+
+-- after update the salary
+empno	ename	job		mgrid	hiredate		salary	comm	deptno	deptno	dname		deptlocation
+7369		SMITH	CLERK	7902		1980-12-17	880		NULL		20		20		RESEARCH		DALLAS
+7566		JONES	MANAGER	7839		1981-04-02	3272.5	NULL		20		20		RESEARCH		DALLAS
+7788		SCOTT	ANALYST	7566		1987-04-19	3300		NULL		20		20		RESEARCH		DALLAS
+7876		ADAMS	CLERK	7788		1987-05-23	1210		NULL		20		20		RESEARCH		DALLAS
+7902		FORD		ANALYST	7566		1981-12-03	3300		NULL		20		20		RESEARCH		DALLAS
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+5. Find the number of CLERKS employed. Give it a descriptive heading. 
+
+solution :
+select COUNT(job) as 'Number Of CLERK'
+from employee
+where job='CLERK'
+
+output :
+Number Of CLERK
+4
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+6. Find the average salary for each job type and the number of people employed in each job.
+
+solution :
+select job, avg(salary) as 'average salary', COUNT(job) as 'Number of employee in each job'
+from employee
+group by job
+
+output :
+job			average salary	Number of employee in each job
+ANALYST		3300			2
+CLERK		1085			4
+MANAGER		2857.5		3
+PRESIDENT		5000			1
+SALESMAN		1400			4
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+7. List the employees with the lowest and highest salary.
+
+solution :
+select MAX(salary) as 'HIGHEST SALARY', MIN(salary) as 'LOWEST SALARY'
+from employee
+
+output :
+HIGHEST SALARY	LOWEST SALARY
+5000				880
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+8. List full details of departments that don't have any employees.'
+
+solution :
+select * from dept d
+LEFT JOIN employee e on d.deptno = e.deptno
+WHERE e.deptno is null
+
+output :
+deptno	dname		deptlocation	empno	ename	job		mgrid	hiredate		salary	comm	deptno
+40		OPERATIONS	BOSTON		NULL		NULL		NULL		NULL		NULL			NULL		NULL		NULL
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+9.Get the names and salaries of all the analysts earning more than 1200 who are based in department 20.
+Sort the answer by ascending order of name. 
+
+solution :
+select ename as 'Employee Name', salary
+from employee
+where job='ANALYST' and salary > 1200 and deptno = 20
+order by ename
+
+output :
+Employee Name		salary
+FORD				3300
+SCOTT			3300
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+10. For each department, list its name and number together with the total salary paid to employees in that department. 
+
+solution :
+select d.dname, d.deptno, sum(e.salary) as TOTAL_SALARY
+from dept d, employee e
+where d.deptno=e.deptno
+group by d.dname, d.deptno
+
+output :
+dname		deptno	TOTAL_SALARY
+ACCOUNTING	10		8750
+RESEARCH		20		11962.5
+SALES		30		9400
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+11. Find out salary of both MILLER and SMITH.
+
+solution :
+select salary, empno, ename from employee where ename='SMITH' or ename='MILLER'
+
+output :
+salary	empno	ename
+800		7369		SMITH
+1300		7934		MILLER
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+12. Find out the names of the employees whose name begin with ‘A’ or ‘M’. 
+
+solution :
+select ename from employee where ename like '[AM]%'
+
+output :
+ename
+ALLEN
+MARTIN
+ADAMS
+MILLER
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+13. Compute yearly salary of SMITH.
+
+solution :
+select ename as 'Employee Name', (salary*12) as 'Annual Salary' from employee where ename='SMITH'
+
+output :
+Employee Name		Annual Salary
+SMITH			9600
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+14. List the name and salary for all employees whose salary is not in the range of 1500 and 2850
+
+solution :
+select ename, salary from employee where salary not between 1500 and 2850
+
+output :
+Ename	salary
+SMITH	800
+WARD	1250
+JONES	2975
+MARTIN	1250
+SCOTT	3000
+KING		5000
+ADAMS	1100
+JAMES	950
+FORD		3000
+MILLER	1300
