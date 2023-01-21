@@ -1,0 +1,316 @@
+SQL Exercise
+
+SET II  (Using the same tables as Assignment 1)
+
+NOTE: *USE FONT SIZE 10 IN WINDOWS11*
+
+_____________________________________________________________________________________________________________
+
+que: 1. Retrieve a list of MANAGERS.
+
+solution:
+>>>	select * from employee where job='MANAGER'
+
+output: 
+empno	ename	job		mgr_id	hiredate		salary	comm		deptno
+............................................................................
+7566		JONES	MANAGER	7839		1981-04-02	3272.5	NULL		20
+7698		BLAKE	MANAGER	7839		1981-05-01	2850		NULL		30
+7782		CLARK	MANAGER	7839		1981-06-09	2450		NULL		10
+
+_____________________________________________________________________________________________________________
+
+2. Find out the names and salaries of all employees earning more than 1000 per month.
+
+solution:
+>>>	select ename, salary from employee where salary>=1000
+
+output:
+ename	salary
+.................
+ALLEN	1600
+WARD		1250
+JONES	3272.5
+MARTIN	1250
+BLAKE	2850
+CLARK	2450
+SCOTT	3300
+KING		5000
+TURNER	1500
+ADAMS	1210
+FORD		3300
+MILLER	1300
+
+_____________________________________________________________________________________________________________
+
+3. Display the names and salaries of all employees except JAMES.
+
+solution :
+>>>	select ename, salary from employee where ename!='JAMES'
+
+output:
+ename	salary
+.................
+SMITH	880
+ALLEN	1600
+WARD		1250
+JONES	3272.5
+MARTIN	1250
+BLAKE	2850
+CLARK	2450
+SCOTT	3300
+KING		5000
+TURNER	1500
+ADAMS	1210
+FORD		3300
+MILLER	1300
+
+_____________________________________________________________________________________________________________
+
+4. Find out the details of employees whose names begin with ‘S’. 
+
+solution:
+>>>	select * from employee where ename like 'S%'
+
+output:
+empno	ename	job		mgr_id	hiredate		salary	comm		deptno
+............................................................................
+7369		SMITH	CLERK	7902		1980-12-17	880		NULL		20
+7788		SCOTT	ANALYST	7566		1987-04-19	3300		NULL		20
+
+_____________________________________________________________________________________________________________
+
+5. Find out the names of all employees that have ‘A’ anywhere in their name.
+
+solution:
+>>>	select ename from employee  where ename like '%A%'
+
+output:
+ename
+......
+ALLEN
+WARD
+MARTIN
+BLAKE
+CLARK
+ADAMS
+JAMES
+
+_____________________________________________________________________________________________________________
+
+6. Find out the names of all employees that have ‘L’ as their third character in 
+their name.
+
+solution:
+>>>	select ename from employee where ename like '__L%'
+
+output:
+ename
+......
+ALLEN
+MILLER
+
+_____________________________________________________________________________________________________________
+
+7. Compute daily salary of JONES.
+
+solution:
+>>>	select ename, (salary*12)/365 as 'per day salary of JONES' from employee where ename='JONES'
+
+output:
+ename	per day salary of JONES
+......................
+JONES	107.5
+
+_____________________________________________________________________________________________________________
+
+8. Calculate the total monthly salary of all employees. 
+
+solution:
+>>>	select sum(salary) as 'total monthly salary of all employee' from employee
+
+output:
+total monthly salary of all employee
+...................................
+30112.5
+
+_____________________________________________________________________________________________________________
+
+9. Print the average annual salary.
+
+solution:
+>>>	select empno, ename, avg(salary*12) as 'average annual salary' from employee
+	group by empno, ename
+
+output:
+>>> create or alter procedure avg_salary
+ as
+  begin
+   return (select sum(salary*12) from employee)
+  end
+
+>>> create or alter procedure totalemp
+ as
+  begin
+   return (select count(*) from employee)
+  end
+
+>>>	declare @totalsal int, @totalemp int
+>>>	exec @totalsal = avg_salary
+>>>	exec @totalemp = totalemp
+>>>	print(@totalsal/@totalemp)
+
+output:
+25810
+
+_____________________________________________________________________________________________________________
+
+10. Select the name, job, salary, department number of all employees except SALESMAN from department number 30.
+
+solution:
+>>>	select ename, job, salary, deptno from employee where (job='SALESMAN' and deptno!=30) or (job!='SALESMAN')
+
+output:
+ename	job		salary	deptno
+......................................
+SMITH	CLERK	880		20
+hasu		SALESMAN	15000	20
+JONES	MANAGER	3272.5	20
+BLAKE	MANAGER	2850		30
+CLARK	MANAGER	2450		10
+SCOTT	ANALYST	3300		20
+KING		PRESIDENT	5000		10
+ADAMS	CLERK	1210		20
+JAMES	CLERK	950		30
+FORD		ANALYST	3300		20
+MILLER	CLERK	1300		10
+_____________________________________________________________________________________________________________
+
+11. List unique departments of the EMP table.
+
+solution:
+>>>	select d.dname
+	from dept d join employee e
+	on d.deptno=e.deptno
+	where d.deptno=e.deptno
+	group by d.dname
+
+output:
+dname
+...........
+ACCOUNTING
+RESEARCH
+SALES
+
+_____________________________________________________________________________________________________________
+
+12. List the name and salary of employees who earn more than 1500 and are in department 10 or 30. 
+Label the columns Employee and Monthly Salary respectively.
+
+solution:
+>>>	select ename as 'Employee', salary as 'Monthly Salary'
+	from employee where salary > 1500 and (deptno=10 or deptno=30)
+
+output:
+Employee	Monthly Salary
+.........................
+ALLEN	1600
+BLAKE	2850
+CLARK	2450
+KING		5000
+
+_____________________________________________________________________________________________________________
+
+13. Display the name, job, and salary of all the employees whose job is MANAGER or 
+-- ANALYST and their salary is not equal to 1000, 3000, or 5000. 
+
+solution:
+>>>	select ename, job, salary from employee
+	where (job='MANAGER' or job='ANALYST') and (salary!=1000 and salary!=3000 and salary!=5000)
+
+output:
+ename	job		salary
+..............................
+JONES	MANAGER	3272.5
+BLAKE	MANAGER	2850
+CLARK	MANAGER	2450
+SCOTT	ANALYST	3300
+FORD		ANALYST	3300
+
+_____________________________________________________________________________________________________________
+
+14. Display the name, salary and commission for all employees whose commission amount is greater than their salary increased by 10%. 
+
+solution:
+>>>	select ename, salary, comm  from employee where comm > salary + ((salary*10)/100)
+
+output:
+ename	salary	comm
+MARTIN	1250		1400
+
+_____________________________________________________________________________________________________________
+
+15. Display the name of all employees who have two Ls in their name and are in department 30 or their manager is 7782.
+
+solution:
+>>>	select ename from employee where ename like '%[Ls]%' and (deptno=30 or mgr_id=7782)
+
+output:
+ename
+.......
+ALLEN
+BLAKE
+JAMES
+MILLER
+
+_____________________________________________________________________________________________________________
+
+16. Display the names of employees with experience of over 30 years and under 40 yrs.
+
+solution:
+>>>	select ename from employee where year(getdate())-year(hiredate) between 30 and 40
+
+output:
+ename
+.......
+SCOTT
+ADAMS
+
+_____________________________________________________________________________________________________________
+
+17. Retrieve the names of departments in ascending order and their employees in descending order.
+
+solution:
+>>>	select d.dname, e.ename from dept d join employee e
+	on d.deptno=e.deptno
+	order by d.dname, e.ename desc
+
+output:
+dname		ename
+.........................
+ACCOUNTING	MILLER
+ACCOUNTING	KING
+ACCOUNTING	CLARK
+RESEARCH		SMITH
+RESEARCH		SCOTT
+RESEARCH		JONES
+RESEARCH		FORD
+RESEARCH		ADAMS
+SALES		WARD
+SALES		TURNER
+SALES		MARTIN
+SALES		JAMES
+SALES		BLAKE
+SALES		ALLEN
+
+_____________________________________________________________________________________________________________
+
+18. Find out the experience of MILLER.
+
+solution:
+>>>	select ename, year(getdate())-year(hiredate) as 'EXPERIENCE OF MILLER' from employee where ename='MILLER'
+
+output:
+ename	EXPERIENCE OF MILLER
+MILLER	41
+_____________________________________________________________________________________________________________
