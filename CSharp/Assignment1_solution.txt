@@ -1,0 +1,265 @@
+Name : Hasmukh Makvana
+
+C# assignment 1
+_________________________________________________________________________________________________________________________________
+
+1. Write a C# Sharp program to accept two integers and check whether they are equal or not. 
+
+Test Data :
+Input 1st number: 5
+Input 2nd number: 5
+Expected Output :
+5 and 5 are equal
+
+Solution : 
+
+using System;
+
+namespace Assignment_1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int a, b;
+            Console.WriteLine("Enter First number : ");
+            a = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter Second number : ");
+            b = int.Parse(Console.ReadLine());
+            string str = a == b ? "Both number are equal" : "both number not equal";
+            Console.WriteLine(str);
+            Console.ReadLine();
+        }
+    }
+}
+
+
+_________________________________________________________________________________________________________________________________
+
+
+
+2. Write a C# Sharp program to check whether a given number is positive or negative. 
+
+Test Data : 14
+Expected Output :
+14 is a positive number
+
+Solution : 
+
+using System;
+
+namespace Assignment_1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+             int a;
+            Console.WriteLine("Enter Number : ");
+            a = Convert.ToInt32(Console.ReadLine());
+            string str = a > 0 ?a+" number is psitive":a==0?a+" number is zero" :a+" number is negative";
+            Console.WriteLine(str);
+            Console.ReadLine();
+        }
+    }
+}
+
+____________________________________________________________________________________________________________________________________
+
+3. Write a C# Sharp program that takes two numbers as input and perform an operation (+,-,*,/) on them and displays the result of that operation. 
+
+Test Data
+Input first number: 20
+Input operation: -
+Input second number: 12
+Expected Output :
+20 - 12 = 8
+
+Solution :
+
+using System;
+
+namespace Assignment_1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int a, b;
+            Console.WriteLine("Enter First number : ");
+            a = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter one operato like +, -, *, / :");
+            char opr = char.Parse(Console.ReadLine());
+            Console.WriteLine("Enter Second number : ");
+            b = int.Parse(Console.ReadLine());
+
+            switch (opr) 
+            {
+                case '+':
+                    Console.WriteLine("Addition is : {0}", a + b);
+                    break;
+                case '-':
+                    Console.WriteLine("Substraction is : {0}", a - b);
+                    break;
+                case '*':
+                    Console.WriteLine("Multiplication is : {0}", a * b);
+                    break;
+                case '/':
+                    Console.WriteLine("Division is : {0}", a / b);
+                    break;
+                default:
+                    Console.WriteLine("**** Wrong input Enter Right operator ****");
+                    break;
+            }
+            Console.ReadLine();
+        }
+    }
+}
+
+________________________________________________________________________________________________________________________________________
+
+Arrays 
+
+Write a  Program to assign integer to an array  and then print the following
+a.	Average value of Array elements
+
+Solution :
+
+	static void Main(string[] args)
+        {
+            int[] arr = new int[] {7,8,9,10,11,12};
+            float sum=0f;
+            for(int i = 0;i < arr.Length; i++)
+            {
+                sum += arr[i];
+            }
+            Console.WriteLine("Average value of Array elements : {0}", (sum / arr.Length));
+            Console.ReadLine();
+        }
+
+
+b.	Minimum and Maximum value in an array 
+
+static void Main(string[] args)
+        {
+            int[] arr = new int[] {7,8,9,6,10,90,11,12,8,6};
+            int max = 0, min = arr[0],i = 0;
+            while (i < arr.Length)
+            {
+                if (arr[i] > max)
+                {
+                    max = arr[i];
+                }
+                if (arr[i] < min)
+                {
+                    min = arr[i];
+                }
+                i++;
+            }
+            Console.WriteLine($"MAXIMUM VALUE IS : {max} \nMINIMUM VALUE IS : {min}");
+            Console.ReadLine();
+        }
+
+________________________________________________________________________________________________________________________________________
+    
+2.	Write a program in C# to accept ten marks and display the 
+		following
+a.	Total
+b.	Average
+c.	Minimum marks
+d.	Maximum marks
+e.	Display marks in ascending order
+f.	Display marks in descending order
+
+Solution :
+
+static void Main(string[] args)
+        {
+            int[] arr = new int[10];
+            int max = 0, min = arr[0], i = 0, temp = 0;
+            float sum = 0f;
+            // accept ten marks
+            for (i = 0;i < arr.Length; i++)
+            {
+                Console.Write("Enter Marks : ");
+                arr[i] = Convert.ToInt32(Console.ReadLine());
+            }
+
+            //display all marks
+            for (i = 0; i < arr.Length; i++)
+            {
+                Console.WriteLine(arr[i]);
+            }
+
+            //a.Total
+            i = 0;
+            while (i < arr.Length)
+            {
+                sum += arr[i];
+                i++;
+            }
+            Console.WriteLine("Total is : {0}", sum);
+
+            // b.	Average
+            Console.WriteLine("Average is : {0}", sum / arr.Length);
+
+            //c.Minimum marks
+            //d.Maximum marks
+            i = 0;
+            min = arr[i];
+            while (i < arr.Length)
+            {
+                if (arr[i] > max)
+                {
+                    max = arr[i];
+                }
+                if (arr[i] < min)
+                {
+                    min = arr[i];
+                }
+                i++;
+            }
+            Console.WriteLine($"MAXIMUM VALUE IS : {max} \nMINIMUM VALUE IS : {min}");
+           
+            //e.Display marks in ascending order
+
+            for (i = 0;i < arr.Length; i++)
+            {
+                for(int j = i + 1; j < arr.Length; j++)
+                {
+                    if (arr[i] > arr[j])
+                    {
+                        temp = arr[j];
+                        arr[j] = arr[i];
+                        arr[i] = temp;
+                    }
+                }
+            }
+
+            Console.WriteLine("\n\nArray in ascending order ");
+            for (i = 0; i < arr.Length; i++)
+            {
+                Console.WriteLine(arr[i]);
+            }
+
+            //f.Display marks in descending order
+
+            for (i = 0; i < arr.Length; i++)
+            {
+                for (int j = i + 1; j < arr.Length; j++)
+                {
+                    if (arr[i] < arr[j])
+                    {
+                        temp = arr[j];
+                        arr[j] = arr[i];
+                        arr[i] = temp;
+                    }
+                }
+            }
+            Console.WriteLine("\n\nArray in descending order ");
+            for (i = 0; i < arr.Length; i++)
+            {
+                Console.WriteLine(arr[i]);
+            }
+            Console.ReadLine();
+        }
