@@ -1,0 +1,305 @@
+Name : Hasmukh Makvana
+
+__________________________________________________________________________________________________________________________________________________
+
+Strings Assignment:
+
+1.	Write a program in C# to accept a word from the user and display the length of it.
+
+Solution :
+-----------
+using System;
+
+namespace Assignment_2
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Enter a Sentance : ");
+            string str = Console.ReadLine();
+            Console.WriteLine(str.Length);
+            Console.ReadLine();
+        }
+    }
+}
+
+
+__________________________________________________________________________________________________________________________________________________
+
+2.	Write a program in C# to accept a word from the user and display the reverse of it. 
+
+Solution : 
+-----------
+
+using System;
+
+namespace Assignment_2
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Enter a Sentance : ");
+            string str = Console.ReadLine();
+
+            // string reverse using inbuilt function 
+            Console.WriteLine(str.Reverse().ToArray());
+
+            // String reverse menually
+            string rev = "";
+            for(int i = str.Length-1; i >= 0; i--)
+            {
+                rev += str[i];
+            }
+            Console.WriteLine(rev);
+            Console.ReadLine();
+        }
+    }
+}
+
+__________________________________________________________________________________________________________________________________________________
+
+3.	Write a program in C# to accept two words from user and find out if they are same. 
+
+Solution :
+----------
+
+using System;
+
+namespace Assignment_2
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Enter a Sentance : ");
+            string str1 = Console.ReadLine();
+            Console.WriteLine("Enter a Sentance : ");
+            string str2 = Console.ReadLine();
+            string sameornot = str1.Equals(str2) ? "Both word are same " : "Both word are not same";
+            Console.WriteLine(sameornot);
+            Console.ReadLine();
+        }
+    }
+}
+
+__________________________________________________________________________________________________________________________________________________
+
+Classes and Constructors:
+
+1. Create a class called Accounts which has data members(fields) like Account no, Customer name, Account type, Transaction type (d/w), amount, balance
+D->Deposit
+W->Withdrawal
+
+-write a function that updates the balance depending upon the transaction type
+
+	-If transaction type is deposit call the credit(int amount) function and update balance
+	-If transaction type is withdraw call debit(int amt)function and update balance
+-Pass the other information like Acount no,name,acc type through constructor
+-call the show data method to display the values.
+
+Solution :
+------------
+
+using System;
+
+namespace Assignment_2
+{
+    class Accounts
+    {
+        int Account_No;
+        string Customer_Name;
+        string Account_Type;
+        float Balance;
+        public Accounts(int Account_No, String Customer_Name, string Account_Type, float Balance)
+        {
+            this.Account_No = Account_No;
+            this.Customer_Name = Customer_Name;
+            this.Account_Type = Account_Type;
+            this.Balance = Balance;
+        }
+        public void ShowDetails()
+        {
+            Console.WriteLine($"Account Number : {Account_No}");
+            Console.WriteLine($"Customer Name : {Customer_Name}");
+            Console.WriteLine($"Account Type : {Account_Type}");
+            Console.WriteLine($"Total Balance : {Balance}");
+        }
+        public void Deposit(float Amt)
+        {
+            Balance += Amt;
+            Console.WriteLine("Deposit Successfully");
+        }
+        public void Withdraw(float Amount)
+        {
+            if((Balance - Amount) > 0)
+            {
+                Balance -= Amount;
+                Console.WriteLine("Amount withdraw successfully");
+            }
+            else
+            {
+                Console.WriteLine("Balance is Low");
+            }
+        }
+    }
+}
+
+
+using System;
+
+namespace Assignment_2
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int choice = 0;
+            Console.Write("Enter Account Number : ");
+            int Ac_no = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Enter Customer Name : ");
+            string Cname = Console.ReadLine();
+            Console.Write("Enter Account Type saving/current : ");
+            string Acc_type = Console.ReadLine();
+            Console.Write("Enter Balance : ");
+            float Balance = float.Parse(Console.ReadLine());
+            Accounts accounts = new Accounts(Ac_no, Cname, Acc_type, Balance);
+            do
+            {
+                Console.WriteLine("------------------------------");
+                Console.WriteLine("1. Show details :");
+                Console.WriteLine("2. transactioin :");
+                Console.WriteLine("3. Exit :");
+                choice = int.Parse(Console.ReadLine());
+                switch (choice)
+                {
+                    case 1:
+                        accounts.ShowDetails();
+                        break;
+                    case 2:
+                        float amount;
+                        Console.WriteLine("  D. Deposite :");
+                        Console.WriteLine("  W. Withdraw :");
+                        char Ttype = char.Parse(Console.ReadLine());
+                        switch (Ttype.ToString().ToUpper())
+                        {
+                            case "D":
+                                Console.Write("Enter Amount to deposite : ");
+                                amount = float.Parse(Console.ReadLine());
+                                accounts.Deposit(amount);
+                                break;
+                            case "W":
+                                Console.Write("Enter Amount to Withdraw : ");
+                                amount = float.Parse(Console.ReadLine());
+                                accounts.Withdraw(amount);
+                                break;
+                            default:
+                                Console.WriteLine("*** Invailid transactioin type ***");
+                                break;
+                        }
+                        break;
+                    case 3:
+                        break;
+                }
+            }while (choice < 3);
+        }
+    }
+}
+
+
+___________________________________________________________________________________________________________________________________________________
+
+2. Create a class called student which has data members like rollno, name, class, Semester, branch, int [] marks=new int marks [5](marks of 5 subjects )
+
+-Pass the details of student like rollno, name, class, SEM, branch in constructor
+-For marks write a method called GetMarks() and give marks for all 5 subjects
+-Write a method called displayresult, which should calculate the average marks
+-If marks of any one subject is less than 35 print result as failed 
+-If marks of all subject is >35 but average is < 50 then also print result as failed
+-If avg > 50 then print result as passed.
+-Write a DisplayData() method to display all values.
+
+Solution :
+-----------
+
+using System;
+
+namespace Assignment_2
+{
+    class Students
+    {
+        int Rollno;
+        string Sname;
+        string Class;
+        ushort Semester;
+        string Branch;
+        int[] marks = new int[5];
+        public Students(int Rollno, string Sname, string Class, ushort Semester, string Branch, int[] marks)
+        {
+            this.Rollno = Rollno;
+            this.Sname = Sname;
+            this.Class = Class;
+            this.Semester = Semester;
+            this.Branch = Branch;
+            this.marks = marks;
+        }
+
+        public void Displayresult()
+        {
+            Console.WriteLine("--------------------------------------");
+            Console.WriteLine($"student Rollno : {Rollno}");
+            Console.WriteLine($"Student name : {Sname}");
+            Console.WriteLine($"class : {Class}");
+            Console.WriteLine($"Semester : {Semester}");
+            Console.WriteLine($"Branch name : {Branch}");
+            Console.WriteLine($"Total marks : {marks.Sum()}");
+            string Status = marks.Sum() < 35? "Fail" : (marks.Sum()/marks.Length)<50? "Fail" : "Pass" ;
+            Console.WriteLine($"Status : {Status}");
+        }
+    }
+}
+
+using System;
+
+namespace Assignment_2
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int Rollno;
+            string Sname;
+            string Class;
+            ushort Semester;
+            string Branch;
+            int[] mark = new int[5];
+            Console.Write("Enter Student RollNo : ");
+            Rollno = int.Parse(Console.ReadLine());
+            Console.Write("Enter Student Name : ");
+            Sname = Console.ReadLine();
+            Console.Write("Enter Class : ");
+            Class = Console.ReadLine();
+            Console.Write("Enter Semester : ");
+            Semester = ushort.Parse(Console.ReadLine());
+            Console.Write("Enter Branch Name : ");
+            Branch = Console.ReadLine();
+            Students student = new Students(Rollno, Sname, Class, Semester, Branch, GetMarks());
+            student.Displayresult();
+            Console.ReadLine();
+        }
+        public static int[] GetMarks()
+        {
+            int[] marks = new int[5];
+            for (int i = 0; i < marks.Length; i++)
+            {
+                Console.Write($"Enter sub {i+1} marks : ");
+                marks[i] = int.Parse(Console.ReadLine());
+            }
+            return marks;
+        }
+    }
+}
+
+
+___________________________________________________________________________________________________________________________________________________
