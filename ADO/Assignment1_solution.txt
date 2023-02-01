@@ -1,0 +1,249 @@
+Name : Hasmukh Makvana
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+Code challange - 3
+
+Time : 75 mts
+---------------------------------------------------------------
+
+1. Create a table called Code_Employee(empno int primary key,
+   empname varchar(35), (is a required field)
+  empsal numeric(10,2) - (check empsal >=25000)
+  emptype char(1) ) (either 'F' for fulltime or 'P' part time)
+
+solution:
+----------
+
+create table code_employee(
+empno int primary key,
+empname varchar(35) not null,
+empsal decimal(10,2) check (empsal >= 25000),
+emptype char(1) check (emptype='F' or emptype='f' or emptype='P' or emptype='p')
+)
+
+___________________________________________________________________________________________________________________________________________
+
+2. Create a stored procedure to add new employee records. The procedure should accept all the employee details as input parameters 
+
+  Test the procedure
+
+solution:
+------------
+create or alter proc insertEmp(@eno int, @ename varchar(35), @esal decimal, @etype char)
+ as
+  begin
+   insert into code_employee values(@eno, @ename, @esal, @etype)
+  end
+-------------------------------------------
+
+exec insertEmp 12, 'hasmukh', 26000.00, 'F'
+
+______________________________________________________________________________________________________________________________________
+
+3. Using Ado.net classes/methods, insert employee record in the table by invoking the procedure
+
+solution:
+----------
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EmpStoredProcEg
+{
+    class Program
+    {
+        public static SqlConnection conn;
+        public static SqlCommand cmd;
+        public static SqlDataReader dr;
+        static void Main(string[] args)
+        {
+            CallProcedure();
+            Console.ReadLine();
+        }
+
+        static SqlConnection GetConnection()
+        {
+            conn = new SqlConnection("data source=LAPTOP-A6J65V4V\\SQLEXPRESS;Initial Catalog=EmpDB;Integrated Security=true;");
+            conn.Open();
+            return conn;
+        }
+
+        static void CallProcedure()
+        {
+            conn = GetConnection();
+            Console.WriteLine("Inserting new data ");
+            Console.Write("Enter Employee No : ");
+            int empno = int.Parse(Console.ReadLine());
+            Console.Write("Enter Employee Name : ");
+            string empname = Console.ReadLine();
+            Console.Write("Enter Employee Salary : ");
+            float empsal = float.Parse(Console.ReadLine());
+            Console.Write("Enter Employee Type F for Fulltime / P for Parttime: ");
+            char emptype = char.Parse(Console.ReadLine());
+            cmd = new SqlCommand("insertEmp", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlParameter sqleno, sqlename, sqlesal, sqletype;
+            
+            sqleno = new SqlParameter("@eno",empno);
+            //sqleno.Direction = ParameterDirection.Input;
+            sqleno.SqlDbType = SqlDbType.Int;
+            cmd.Parameters.Add(sqleno);
+
+            sqlename = new SqlParameter("@ename", empname);
+            //sqlename.Direction = ParameterDirection.Input;
+            sqlename.SqlDbType = SqlDbType.VarChar;
+            cmd.Parameters.Add(sqlename);
+
+            sqlesal = new SqlParameter("@esal", empsal);
+            //sqlesal.Direction = ParameterDirection.Input;
+            sqlesal.SqlDbType = SqlDbType.Decimal;
+            cmd.Parameters.Add(sqlesal);
+
+            sqletype = new SqlParameter("@etype", emptype);
+            //sqletype.Direction = ParameterDirection.Input;
+            sqletype.SqlDbType = SqlDbType.Char;
+            cmd.Parameters.Add(sqletype);
+            try
+            {
+                cmd.ExecuteNonQuery();
+                Console.WriteLine("saved");
+            }
+            catch (SqlException)
+            {
+                Console.WriteLine("not saved");
+            }
+        }
+    }
+}
+
+
+/* testing & data inserted succesfully */
+
+______________________________________________________________________________________________________________________________________
+
+4. Display all the records (including the newely added record) 
+
+solution:
+-----------
+/**********
+
+3 or 4 solution with user choice.
+all employee data inserted and also display
+
+**********/
+---------------------------------
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EmpStoredProcEg
+{
+    class Program
+    {
+        public static SqlConnection conn;
+        public static SqlCommand cmd;
+        public static SqlDataReader dr;
+        static void Main(string[] args)
+        {
+            int ch;
+            do 
+            {
+                Console.WriteLine("-----------------------------");
+                Console.WriteLine("1. data insert : ");
+                Console.WriteLine("2. data show : ");
+                Console.WriteLine("3. Exit");
+                ch = int.Parse(Console.ReadLine());
+                switch (ch)
+                {
+                    case 1:
+                        CallProcedure();
+                        break;
+                    case 2:
+                        try
+                        {
+                            dr = GetAllRecords();
+                            while (dr.Read())
+                            {
+                                Console.WriteLine(dr["empno"] + " | " + dr["empname"] + " | " + dr["empsal"] + " | " + dr["emptype"]);
+                            }
+                        }
+                        catch (SqlException se)
+                        {
+                            Console.WriteLine(se.Message);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            } while (ch < 3);
+        }
+
+        static SqlConnection GetConnection()
+        {
+            conn = new SqlConnection("data source=LAPTOP-A6J65V4V\\SQLEXPRESS;Initial Catalog=EmpDB;Integrated Security=true;");
+            conn.Open();
+            return conn;
+        }
+
+        static void CallProcedure()
+        {
+            conn = GetConnection();
+            Console.WriteLine("Inserting new data ");
+            Console.Write("Enter Employee No : ");
+            int empno = int.Parse(Console.ReadLine());
+            Console.Write("Enter Employee Name : ");
+            string empname = Console.ReadLine();
+            Console.Write("Enter Employee Salary : ");
+            float empsal = float.Parse(Console.ReadLine());
+            Console.Write("Enter Employee Type F for Fulltime / P for Parttime: ");
+            char emptype = char.Parse(Console.ReadLine());
+            cmd = new SqlCommand("insertEmp", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlParameter sqleno, sqlename, sqlesal, sqletype;
+            
+            sqleno = new SqlParameter("@eno",empno);
+            sqleno.SqlDbType = SqlDbType.Int;
+            cmd.Parameters.Add(sqleno);
+
+            sqlename = new SqlParameter("@ename", empname);
+            sqlename.SqlDbType = SqlDbType.VarChar;
+            cmd.Parameters.Add(sqlename);
+
+            sqlesal = new SqlParameter("@esal", empsal);
+            sqlesal.SqlDbType = SqlDbType.Decimal;
+            cmd.Parameters.Add(sqlesal);
+
+            sqletype = new SqlParameter("@etype", emptype);
+            sqletype.SqlDbType = SqlDbType.Char;
+            cmd.Parameters.Add(sqletype);
+            try
+            {
+                cmd.ExecuteNonQuery();
+                Console.WriteLine("saved");
+                conn.Close();
+            }
+            catch (SqlException)
+            {
+                Console.WriteLine("not saved");
+            }
+        }
+
+        static SqlDataReader GetAllRecords()
+        {
+            conn = GetConnection();
+            cmd = new SqlCommand("select * from code_employee", conn);
+            dr = cmd.ExecuteReader();
+            return dr;
+        }
+    }
+}
+
