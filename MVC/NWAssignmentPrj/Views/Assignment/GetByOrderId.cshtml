@@ -1,0 +1,17 @@
+﻿@model IEnumerable<NWAssignmentPrj.Models.Order> 
+@{
+    ViewBag.Title = "GetByOrderId";
+}
+
+<h2>Get Cutomer OrderId</h2>
+
+@foreach(var item in Model)
+            {
+                <li>order id : @item.orderid</li>
+                <li>product name : @item.productName</li>
+                <li>customer id : @item.customer.CustomerID</li>
+                <li>customer name : @item.customer.CustomerName</li>
+                <li>customer city : @item.customer.Custcity</li>
+                <li>customer country : @item.customer.CustCountry</li>
+                <li>customer phone : @item.customer.CustPhone</li>
+            }

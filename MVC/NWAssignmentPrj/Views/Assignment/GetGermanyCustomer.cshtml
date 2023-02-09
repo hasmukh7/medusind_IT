@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "GetGermanyCustomer";
+}
+
+<h2>All Germany Customer</h2>
+
+@foreach(var item in Model)
+            {
+                <li>Customer id: @item.CustomerID</li>
+                <li>Customer Name : @item.CustomerName</li>
+                <li>Customer city : @item.Custcity</li>
+                <li>Country : @item.CustCountry</li>
+                <li>phone : @item.CustPhone</li>
+                <li>------------------------------</li>
+            }
+
