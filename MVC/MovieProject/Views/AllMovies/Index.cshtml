@@ -1,0 +1,57 @@
+﻿@model IEnumerable<MovieProject.Models.Movie>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Insert New Movie", "Create")
+</p>
+
+<p>
+    @using (Html.BeginForm("FindMoviesByYear", "AllMovies", FormMethod.Get))
+    {
+        <label>Find Movies By Release Year</label>
+        @Html.TextBox("txtyear")
+        <input type="submit" value="Submit" />
+    }
+    @*<label>Find Movies By Release Year</label>
+        @Html.Label("Find Movies By Release Year")
+        @Html.TextBox("txtyear")
+        @Html.ActionLink("Find", "FindMoviesByYear")*@
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Mid)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Moviename)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateofRelease)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <th>
+            @Html.DisplayFor(modelItem => item.Mid)
+        </th>
+        <td>
+            @Html.DisplayFor(modelItem => item.Moviename)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateofRelease)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Mid }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Mid }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Mid })
+        </td>
+    </tr>
+}
+</table>
